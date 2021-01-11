@@ -43,15 +43,15 @@ function midi.processHeader(stream, callback)
 function midi.processTrack(stream, callback, track)
 ```
 
-Parameters:
-
-- `stream` - A stream (e.g. `file*`) that points to the start of a midi file.
-- `callback` - A callback function which is invoked for all midi events; optional.
-- `onlyHeader` - When set to `true`, only the header chunk will be processed; optional.
-- `onlyTrack` - When set to any integer, only the header chunk and track with this one-based index will be processed; optional.
-- `track` - Same as `onlyTrack` but required.
-
 All functions return the total number of tracks in the midi file.
+
+| Parameter    | Description                                                                                           |              |
+|--------------|-------------------------------------------------------------------------------------------------------|--------------|
+| `stream`     | A stream (e.g. `file*`) that points to the start of a midi file.                                      | **required** |
+| `callback`   | A callback function which is invoked for all midi events.                                             | *optional*   |
+| `onlyHeader` | When set to `true`, only the header chunk will be processed.                                          | *optional*   |
+| `onlyTrack`  | When set to any integer, only the header chunk and track with this one-based index will be processed. | *optional*   |
+| `track`      | Same as `onlyTrack` but require.                                                                      | **required** |
 
 ---
 
