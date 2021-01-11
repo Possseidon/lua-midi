@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "editorconfig.editorconfig",
+        "sumneko.lua",
+        "actboy168.lua-debug",
+        "davidanson.vscode-markdownlint"
+    ]
+}
