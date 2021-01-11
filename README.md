@@ -35,7 +35,7 @@ file:close()
 
 ## Library
 
-The library consists of a single Lua file, namely [midi.lua](lib/midi.lua) and exposes the following functions:
+The library consists of a single Lua file, namely [midi.lua](lib/midi.lua), and exposes the following functions:
 
 ```lua
 function midi.process(stream, callback, onlyHeader, onlyTrack)
