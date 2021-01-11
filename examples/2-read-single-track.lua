@@ -24,25 +24,25 @@ header  1       2       480
 track   2
 sequencerOrTrackName    Piano
 keySignature    0       C       major
-noteOn  1       48      80
-noteOn  1       52      80
+noteOn  1       48      0.62992125984252
+noteOn  1       52      0.62992125984252
 deltatime       911
-noteOn  1       48      0
-noteOn  1       52      0
+noteOn  1       48      0.0
+noteOn  1       52      0.0
 deltatime       49
-noteOn  1       50      80
-noteOn  1       57      80
+noteOn  1       50      0.62992125984252
+noteOn  1       57      0.62992125984252
 deltatime       683
-noteOn  1       50      0
-noteOn  1       57      0
+noteOn  1       50      0.0
+noteOn  1       57      0.0
 deltatime       37
-noteOn  1       52      80
-noteOn  1       55      80
-noteOn  1       59      80
+noteOn  1       52      0.62992125984252
+noteOn  1       55      0.62992125984252
+noteOn  1       59      0.62992125984252
 deltatime       227
-noteOn  1       52      0
-noteOn  1       55      0
-noteOn  1       59      0
+noteOn  1       52      0.0
+noteOn  1       55      0.0
+noteOn  1       59      0.0
 deltatime       1
 endOfTrack
 
