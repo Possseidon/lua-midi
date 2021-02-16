@@ -35,7 +35,11 @@ file:close()
 
 ## Library
 
-The library consists of a single Lua file, namely [midi.lua](lib/midi.lua), and exposes the following functions:
+The library consists of a single Lua file, namely [midi.lua](lib/midi.lua).
+
+### Reading full midi files
+
+The following functions require a stream of a real midi file and use a callback to report individual midi events:
 
 ```lua
 function midi.process(stream, callback, onlyHeader, onlyTrack)
@@ -52,6 +56,22 @@ All functions return the total number of tracks in the midi file.
 | `onlyHeader` | When set to `true`, only the header chunk will be processed.                                          | *optional*   |
 | `onlyTrack`  | When set to any integer, only the header chunk and track with this one-based index will be processed. | *optional*   |
 | `track`      | Same as `onlyTrack` but required.                                                                     | **required** |
+
+### Reading single midi events
+
+The following function simply reads a single midi event (excluding the usually preceeding delta-time) from the given stream:
+
+```lua
+function midi.processEvent(stream, callback, runningStatus)
+```
+
+It returns how many bytes it had to read from the stream, followed by the updated runningStatus.
+
+| Parameter       | Description                                              |              |
+|-----------------|----------------------------------------------------------|--------------|
+| `stream`        | A stream (e.g. `file*`) that points to a midi event.     | **required** |
+| `callback`      | A callback function which is invoked for the midi event. | **required** |
+| `runningStatus` | The running status of a previous midi event.             | *optional*   |
 
 ---
 
@@ -72,3 +92,7 @@ Handles only specific midi events using a dispatch table.
 ### [4-event-signatures.lua](examples/4-event-signatures.lua)
 
 Lists the signatures, on how the callback is invoked, for each midi event.
+
+### [5-single-events.lua](examples/5-single-events.lua)
+
+Shows how to read single events from a stream.

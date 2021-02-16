@@ -163,6 +163,43 @@ local function readHeader(stream, callback, chunkLength)
   return format, tracks
 end
 
+---Reads only a single event from the midi stream.
+---@param stream file* A stream, pointing to a midi event.
+---@param callback function The callback function, reporting the midi event.
+---@param runningStatus? integer A running status of a previous midi event.
+---@return integer length, integer runningStatus Returns both read length and the updated running status.
+local function processEvent(stream, callback, runningStatus)
+  local firstByte = assert(stream:read(1), "missing event")
+  local status = firstByte:byte()
+
+  local length = 0
+
+  if status < 0x80 then
+    status = assert(runningStatus, "no running status")
+  else
+    firstByte = stream:read(1)
+    length = 1
+    runningStatus = status
+  end
+
+
+  if status >= 0x80 and status < 0xF0 then
+    length = length + midiEvent[status & 0xF0](stream, callback, (status & 0x0F) + 1, firstByte)
+  elseif status == 0xF0 then
+    length = length + sysexEvent(stream, callback, firstByte)
+  elseif status == 0xF2 then
+    length = length + 2
+  elseif status == 0xF3 then
+    length = length + 1
+  elseif status == 0xFF then
+    length = length + metaEvent(stream, callback, firstByte)
+  else
+    callback("ignore", status)
+  end
+
+  return length, runningStatus
+end
+
 ---Reads the content of a track chunk of a midi file.
 ---@param stream file* A stream, pointing to the data part of a track chunk.
 ---@param callback function The feedback providing callback function.
@@ -171,7 +208,7 @@ end
 local function readTrack(stream, callback, chunkLength, track)
   callback("track", track)
 
-  local lastStatus
+  local runningStatus
 
   while chunkLength > 0 do
     local ticks, vlqLength = readVLQ(stream)
@@ -179,35 +216,9 @@ local function readTrack(stream, callback, chunkLength, track)
       callback("deltatime", ticks)
     end
 
-    local firstByte = assert(stream:read(1), "missing event")
-    local status = firstByte:byte()
-
-    if status < 0x80 then
-      status = assert(lastStatus, "no running status")
-    else
-      firstByte = stream:read(1)
-      chunkLength = chunkLength - 1
-      lastStatus = status
-    end
-
-    local length
-
-    if status >= 0x80 and status < 0xF0 then
-      length = midiEvent[status & 0xF0](stream, callback, (status & 0x0F) + 1, firstByte)
-    elseif status == 0xF0 then
-      length = sysexEvent(stream, callback, firstByte)
-    elseif status == 0xF2 then
-      length = 2
-    elseif status == 0xF3 then
-      length = 1
-    elseif status == 0xFF then
-      length = metaEvent(stream, callback, firstByte)
-    else
-      callback("ignore", status)
-      length = 0
-    end
-
-    chunkLength = chunkLength - vlqLength - length
+    local readChunkLength
+    readChunkLength, runningStatus = processEvent(stream, callback, runningStatus)
+    chunkLength = chunkLength - readChunkLength - vlqLength
   end
 end
 
@@ -285,5 +296,6 @@ end
 return {
   process = process,
   processHeader = processHeader,
-  processTrack = processTrack
+  processTrack = processTrack,
+  processEvent = processEvent
 }
