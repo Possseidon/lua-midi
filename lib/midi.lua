@@ -1,3 +1,5 @@
+local floor = math.floor
+
 ---Reads exactly count bytes from the given stream, raising an error if it can't.
 ---@param stream file* The stream to read from.
 ---@param count integer The count of bytes to read.
@@ -19,8 +21,8 @@ local function readVLQ(stream)
   local length = 0
   repeat
     local byte = assert(stream:read(1), "incomplete or missing variable length quantity"):byte()
-    value = value << 7
-    value = value | byte & 0x7F
+    value = value * 0x80
+    value = value + byte % 0x80
     length = length + 1
   until byte < 0x80
   return value, length
@@ -63,7 +65,7 @@ local midiEvent = {
   end,
   [0xE0] = function(stream, callback, channel, fb)
     local lsb, msb = ("I1I1"):unpack(fb .. stream:read(1))
-    callback("pitch", channel, (lsb | msb << 7) / 0x2000 - 1)
+    callback("pitch", channel, (lsb + msb * 0x80) / 0x2000 - 1)
     return 2
   end
 }
@@ -111,7 +113,7 @@ local metaEvents = {
   [0x54] = makeForwarder("smpteOffset"),
   [0x58] = function(data, callback)
     local numerator, denominator, metronome, dotted = (">I1I1I1I1"):unpack(data)
-    callback("timeSignature", numerator, 1 << denominator, metronome, dotted)
+    callback("timeSignature", numerator, 2 ^ denominator, metronome, dotted)
   end,
   [0x59] = function(data, callback)
     local count, minor = (">I1I1"):unpack(data)
@@ -184,7 +186,7 @@ local function processEvent(stream, callback, runningStatus)
 
 
   if status >= 0x80 and status < 0xF0 then
-    length = length + midiEvent[status & 0xF0](stream, callback, (status & 0x0F) + 1, firstByte)
+    length = length + midiEvent[floor(status / 0x10) * 0x10](stream, callback, (status % 0x10) + 1, firstByte)
   elseif status == 0xF0 then
     length = length + sysexEvent(stream, callback, firstByte)
   elseif status == 0xF2 then
