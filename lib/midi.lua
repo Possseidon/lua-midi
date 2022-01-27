@@ -108,7 +108,7 @@ local metaEvents = {
     local rawTempo = (">I3"):unpack(data)
     callback("setTempo", 6e7 / rawTempo)
   end,
-  [0x54] = makeForwarder("smtpeOffset"),
+  [0x54] = makeForwarder("smpteOffset"),
   [0x58] = function(data, callback)
     local numerator, denominator, metronome, dotted = (">I1I1I1I1"):unpack(data)
     callback("timeSignature", numerator, 1 << denominator, metronome, dotted)

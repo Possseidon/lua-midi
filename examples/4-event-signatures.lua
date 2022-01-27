@@ -63,7 +63,7 @@ function handlers.cuePoint() end
 function handlers.channelPrefix() end
 function handlers.endOfTrack() end
 function handlers.setTempo() end
-function handlers.smtpeOffset() end
+function handlers.smpteOffset() end
 function handlers.timeSignature() end
 function handlers.keySignature() end
 function handlers.sequenceEvent() end
