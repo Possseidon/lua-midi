@@ -13,7 +13,7 @@ local handlers = {}
 function handlers.deltatime(ticks) end
 
 ---Provides information found in the midi header.
----@param format integer The midi format used: 0 - single track; 1 - simultaneous tracks: 2 - independent tracks
+---@param format integer The midi format used: 0 - single track; 1 - simultaneous tracks; 2 - independent tracks
 ---@param tracks integer Number of tracks. Also returned from any of the midi.process() functions for convenience.
 ---@param division integer The number of ticks per quater note (unless the most significant, 16th bit is set, see below).
 ---See [2.1 - Header Chunks](https://www.music.mcgill.ca/~ich/classes/mumt306/StandardMIDIfileformat.html#BM2_1) for more information.

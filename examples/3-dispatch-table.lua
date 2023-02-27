@@ -21,7 +21,7 @@ end
 
 -- Listen for timing events:
 function handlers.deltatime(ticks)
-  print("Pause ".. ticks)
+  print("Pause " .. ticks)
 end
 
 -- Now we can build a callback that dispatches its arguments to the correct handler:
