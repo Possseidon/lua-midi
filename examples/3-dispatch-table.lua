@@ -37,6 +37,8 @@ end
 local file = assert(io.open("resources/short-tune.mid", "rb"))
 midi.process(file, callback)
 
+file:close()
+
 -- The double pauses in the output below are a result of ignoring "noteOff" events.
 
 --[[ Output:
