@@ -9,6 +9,7 @@
             "type": "lua",
             "stopOnEntry": false,
             "request": "launch",
+            "program": "${file}",
             "path": "${workspaceFolder}/examples/?.lua;${workspaceFolder}/lib/?.lua"
         }
     ]
