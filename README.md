@@ -50,7 +50,7 @@ function midi.processTrack(stream, callback, track)
 All functions return the total number of tracks in the midi file.
 
 | Parameter    | Description                                                                                           |              |
-|--------------|-------------------------------------------------------------------------------------------------------|--------------|
+| ------------ | ----------------------------------------------------------------------------------------------------- | ------------ |
 | `stream`     | A stream (e.g. `file*`) that points to the start of a midi file.                                      | **required** |
 | `callback`   | A callback function which is invoked for all midi events.                                             | *optional*   |
 | `onlyHeader` | When set to `true`, only the header chunk will be processed.                                          | *optional*   |
@@ -68,7 +68,7 @@ function midi.processEvent(stream, callback, runningStatus)
 It returns how many bytes it had to read from the stream, followed by the updated runningStatus.
 
 | Parameter       | Description                                              |              |
-|-----------------|----------------------------------------------------------|--------------|
+| --------------- | -------------------------------------------------------- | ------------ |
 | `stream`        | A stream (e.g. `file*`) that points to a midi event.     | **required** |
 | `callback`      | A callback function which is invoked for the midi event. | **required** |
 | `runningStatus` | The running status of a previous midi event.             | *optional*   |
@@ -96,3 +96,9 @@ Lists the signatures, on how the callback is invoked, for each midi event.
 ### [5-single-events.lua](examples/5-single-events.lua)
 
 Shows how to read single events from a stream.
+
+### [6-timing.lua](examples/6-timing.lua)
+
+Calculates the total length of a midi file in seconds.
+
+Also outlines how to convert midi ticks to seconds in general.
